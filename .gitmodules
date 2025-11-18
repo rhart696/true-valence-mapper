@@ -1,3 +1,6 @@
 [submodule "versions/claude"]
 	path = versions/claude
 	url = git@github.com:rhart696/true-valence-mapper-claude.git
+[submodule "versions/codex"]
+	path = versions/codex
+	url = git@github.com:rhart696/true-valence-mapper-codex.git
