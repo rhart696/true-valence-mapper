@@ -1,0 +1,78 @@
+name: Notify Editions on Shared Update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'shared/**'
+  workflow_dispatch:
+
+jobs:
+  notify-editions:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'shared/')
+
+    steps:
+      - name: Checkout parent repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed files in shared/
+        id: changed-files
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD -- shared/ | tr '\n' ', ')
+          echo "files=${CHANGED}" >> $GITHUB_OUTPUT
+          echo "Changed files: ${CHANGED}"
+
+      - name: Create notification issue
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          gh issue create \
+            --title "🔔 Shared library updated - Review for adoption" \
+            --body "$(cat <<'EOF'
+          ## Shared Library Update
+
+          The shared component library has been updated. Please review for potential adoption in your edition.
+
+          ### Changed Files
+          \`\`\`
+          ${{ steps.changed-files.outputs.files }}
+          \`\`\`
+
+          ### Commit
+          **Message:** ${{ github.event.head_commit.message }}
+          **Author:** ${{ github.event.head_commit.author.name }}
+          **SHA:** ${{ github.sha }}
+
+          ### For Edition Leads
+
+          **Review the changes:**
+          \`\`\`bash
+          cd /home/ichardart/dev/projects/true-valence-mapper
+          git pull origin main
+          git log -1 --stat
+          \`\`\`
+
+          **To adopt in your edition:**
+          1. Review changes in \`shared/\` directory
+          2. Copy relevant files to your edition
+          3. Test integration
+          4. Commit with message: "Adopt shared [component] update"
+
+          **Questions?** Comment on this issue.
+
+          ---
+
+          **Labels:** shared-update, needs-review
+          **Editions:** @claude-edition @codex-edition
+          EOF
+          )" \
+            --label "shared-update,needs-review"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Update parent repo submodules
+        run: |
+          echo "✅ Shared library updated in parent repository"
+          echo "Editions can now pull latest changes via submodule update"
