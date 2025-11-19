@@ -80,6 +80,10 @@ EDITION_EOF
 # Collect metrics for each edition
 CLAUDE_JSON=$(collect_edition_metrics "claude")
 CODEX_JSON=$(collect_edition_metrics "codex")
+BMAD_JSON=$(collect_edition_metrics "bmad")
+SPECKIT_JSON=$(collect_edition_metrics "spec-kit")
+MAGICPATH_JSON=$(collect_edition_metrics "magic-path")
+OPENSPEC_JSON=$(collect_edition_metrics "openspec")
 
 # Combine into single JSON (simplified - would use jq in production)
 cat > "${OUTPUT_FILE}" <<EOF
@@ -91,7 +95,11 @@ cat > "${OUTPUT_FILE}" <<EOF
   },
   "editions": [
     ${CLAUDE_JSON},
-    ${CODEX_JSON}
+    ${CODEX_JSON},
+    ${BMAD_JSON},
+    ${SPECKIT_JSON},
+    ${MAGICPATH_JSON},
+    ${OPENSPEC_JSON}
   ]
 }
 EOF

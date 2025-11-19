@@ -8,17 +8,31 @@ This repository serves as the governance and coordination hub for the True Valen
 
 ## Editions
 
+### AI Agent Editions
+
 | Edition | Repository | Status | Lead Agent | Focus |
 |---------|-----------|--------|------------|-------|
 | Claude Code | [true-valence-mapper-claude](https://github.com/rhart696/true-valence-mapper-claude) | ✅ Active | Claude Code | Reference build, security-first |
-| Codex | [true-valence-mapper-codex](https://github.com/rhart696/true-valence-mapper-codex) | 🚧 In Progress | GitHub Copilot/Codex | Engineering workflow optimization |
-| Multi Path | [true-valence-mapper-multipath](https://github.com/rhart696/true-valence-mapper-multipath) | 📅 Planned | Multi Path | Orchestration experiments |
-| Gemini | [true-valence-mapper-gemini](https://github.com/rhart696/true-valence-mapper-gemini) | 📅 Planned | Gemini AI Studio | AI-powered insights |
-| BMAD Method | [true-valence-mapper-bmad-method](https://github.com/rhart696/true-valence-mapper-bmad-method) | 📅 Planned | TBD | Coaching methodology |
-| Stitch | [true-valence-mapper-stitch](https://github.com/rhart696/true-valence-mapper-stitch) | 📅 Planned | TBD | Automation platform |
-| Speckit | [true-valence-mapper-speckit](https://github.com/rhart696/true-valence-mapper-speckit) | 📅 Planned | TBD | Enablement focus |
+| Codex | [true-valence-mapper-codex](https://github.com/rhart696/true-valence-mapper-codex) | 🚧 In Development | GitHub Copilot/Codex | Engineering workflow optimization |
 
-Legend: ✅ Shipped | 🚧 In Progress | 📅 Planned | ⏸️ Paused | 🗄️ Archived
+### Tool/Methodology Integration Editions
+
+| Edition | Repository | Status | Type | Focus |
+|---------|-----------|--------|------|-------|
+| BMAD | [true-valence-mapper-bmad](https://github.com/rhart696/true-valence-mapper-bmad) | 🚧 In Development | BMAD-METHOD v6-alpha | Requirements modeling & validation |
+| Spec-Kit | [true-valence-mapper-spec-kit](https://github.com/rhart696/true-valence-mapper-spec-kit) | 🚧 In Development | GitHub Spec-Kit | Specification-driven development |
+| Magic-Path | [true-valence-mapper-magic-path](https://github.com/rhart696/true-valence-mapper-magic-path) | 🚧 In Development | Custom Methodology | Intuitive UX/workflow framework |
+| OpenSpec | [true-valence-mapper-openspec](https://github.com/rhart696/true-valence-mapper-openspec) | 🚧 In Development | OpenSpec v0.15.0 | AI-assisted spec generation |
+
+### Planned Future Editions
+
+| Edition | Status | Focus |
+|---------|--------|-------|
+| Multi Path | 📅 Planned | Orchestration experiments |
+| Gemini | 📅 Planned | AI-powered insights |
+| Stitch | 📅 Planned | Automation platform |
+
+Legend: ✅ Active | 🚧 In Development | 📅 Planned | ⏸️ Paused | 🗄️ Archived
 
 ## Repository Structure
 
@@ -35,8 +49,12 @@ true-valence-mapper/
 │   ├── security/      # Input validation and XSS protection
 │   └── tests/         # Common test fixtures
 ├── versions/          # Edition repositories (submodules)
-│   ├── claude/        # → true-valence-mapper-claude
-│   └── codex/         # → true-valence-mapper-codex
+│   ├── claude/        # → true-valence-mapper-claude (AI agent edition)
+│   ├── codex/         # → true-valence-mapper-codex (AI agent edition)
+│   ├── bmad/          # → true-valence-mapper-bmad (BMAD-METHOD integration)
+│   ├── spec-kit/      # → true-valence-mapper-spec-kit (Spec-Kit integration)
+│   ├── magic-path/    # → true-valence-mapper-magic-path (Custom UX methodology)
+│   └── openspec/      # → true-valence-mapper-openspec (OpenSpec integration)
 └── ops/               # Monitoring and status tracking
 ```
 
@@ -75,15 +93,26 @@ See [GOVERNANCE.md](docs/GOVERNANCE.md) for:
 
 ## Feature Comparison
 
-| Feature | Claude | Codex | Gemini | Notes |
-|---------|--------|-------|--------|-------|
-| Core visualization | ✅ v1.0 | 🚧 | 📅 | Claude baseline complete |
-| Cloud storage (anon) | ✅ v1.0 | 🚧 | 📅 | Supabase RLS implemented |
-| Toast notifications | ✅ v1.0 | 🚧 | 📅 | Comprehensive UX feedback |
-| Version history | ✅ v1.0 | 🚧 | 📅 | Cloud-synced history |
-| Input validation | ✅ v1.0 | 🚧 | 📅 | XSS + injection protection |
-| AI-powered insights | 📅 | 📅 | 🚧 | Gemini experiment |
-| Coach sharing | 📅 | 📅 | 📅 | Planned Phase 2 |
+### AI Agent Editions
+
+| Feature | Claude | Codex | Notes |
+|---------|--------|-------|-------|
+| Core visualization | ✅ v1.0 | 🚧 | Claude baseline complete |
+| Cloud storage (anon) | ✅ v1.0 | 🚧 | Supabase RLS implemented |
+| Toast notifications | ✅ v1.0 | 🚧 | Comprehensive UX feedback |
+| Version history | ✅ v1.0 | 🚧 | Cloud-synced history |
+| Input validation | ✅ v1.0 | 🚧 | XSS + injection protection |
+| AI-powered insights | 📅 | 📅 | Planned Phase 2 |
+| Coach sharing | 📅 | 📅 | Planned Phase 2 |
+
+### Tool/Methodology Integrations
+
+| Edition | Integration Status | Key Capabilities | Version |
+|---------|-------------------|------------------|---------|
+| BMAD | 🚧 Setup Complete | Requirements modeling, validation workflows, multi-agent patterns | v6.0.0-alpha.10 |
+| Spec-Kit | 🚧 Setup Complete | Specification-driven development, AI agent guidance | Latest (main) |
+| Magic-Path | 🚧 Architecture Defined | Intuitive UX, smart path detection, visual storytelling | Custom v0.1.0 |
+| OpenSpec | 🚧 Setup Complete | AI-assisted spec generation, multi-agent collaboration | v0.15.0 |
 
 ## Contributing
 
