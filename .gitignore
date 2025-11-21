@@ -27,3 +27,7 @@ __pycache__/
 *.py[cod]
 venv/
 .env
+
+# Edition-local virtualenvs
+versions/*/.venv/
+versions/*/.venv
