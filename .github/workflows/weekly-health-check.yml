@@ -1,0 +1,191 @@
+name: Weekly Health Check
+
+on:
+  schedule:
+    # Every Monday at 10:00 AM UTC
+    - cron: '0 10 * * 1'
+
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  discussions: write
+  issues: write
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Run health check
+        id: health
+        run: |
+          chmod +x scripts/health-check.sh
+          ./scripts/health-check.sh > health-report.txt 2>&1
+          EXIT_CODE=$?
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+
+          # Extract summary metrics
+          SUCCESS_COUNT=$(grep -c "✅" health-report.txt || echo "0")
+          WARNING_COUNT=$(grep -c "⚠️" health-report.txt || echo "0")
+          ERROR_COUNT=$(grep -c "❌" health-report.txt || echo "0")
+
+          echo "success_count=$SUCCESS_COUNT" >> $GITHUB_OUTPUT
+          echo "warning_count=$WARNING_COUNT" >> $GITHUB_OUTPUT
+          echo "error_count=$ERROR_COUNT" >> $GITHUB_OUTPUT
+
+          # Determine status
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "status=HEALTHY" >> $GITHUB_OUTPUT
+            echo "status_emoji=✅" >> $GITHUB_OUTPUT
+          elif [ $ERROR_COUNT -eq 0 ]; then
+            echo "status=WARNINGS" >> $GITHUB_OUTPUT
+            echo "status_emoji=⚠️" >> $GITHUB_OUTPUT
+          else
+            echo "status=ERRORS" >> $GITHUB_OUTPUT
+            echo "status_emoji=❌" >> $GITHUB_OUTPUT
+          fi
+
+          cat health-report.txt
+          exit 0  # Don't fail workflow on health check issues
+        continue-on-error: true
+
+      - name: Generate detailed report if issues found
+        if: steps.health.outputs.exit_code != '0'
+        run: |
+          chmod +x scripts/sync-check-advanced.sh
+          echo "Running detailed sync analysis..."
+          ./scripts/sync-check-advanced.sh --report > detailed-report.txt 2>&1 || true
+          cat detailed-report.txt
+
+      - name: Upload reports as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-health-report-${{ github.run_number }}
+          path: |
+            health-report.txt
+            detailed-report.txt
+            reports/
+          retention-days: 90
+
+      - name: Create GitHub Discussion with results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('health-report.txt', 'utf8');
+            const status = '${{ steps.health.outputs.status }}';
+            const statusEmoji = '${{ steps.health.outputs.status_emoji }}';
+            const date = new Date().toISOString().split('T')[0];
+
+            const body = `# Weekly Health Check Report
+
+**Date:** ${date}
+**Status:** ${statusEmoji} ${status}
+
+## Summary
+- ✅ Success: ${{ steps.health.outputs.success_count }}
+- ⚠️ Warnings: ${{ steps.health.outputs.warning_count }}
+- ❌ Errors: ${{ steps.health.outputs.error_count }}
+
+## Health Check Output
+
+\`\`\`
+${report}
+\`\`\`
+
+## Actions
+
+${status === 'HEALTHY' ? '✅ No action required - all editions synchronized!' : ''}
+${status === 'WARNINGS' ? '⚠️ Review warnings and schedule remediation during weekly sync meeting.' : ''}
+${status === 'ERRORS' ? '❌ **Immediate attention required!** Critical sync issues detected.' : ''}
+
+## Resources
+- [Full Report Artifacts](${context.payload.repository.html_url}/actions/runs/${context.runId})
+- [Sync Reference Models](${context.payload.repository.html_url}/blob/main/docs/SYNC-REFERENCE-MODELS.md)
+- [Remediation Guide](${context.payload.repository.html_url}/blob/main/docs/SYNC-REFERENCE-MODELS.md#remediation-workflows)
+
+---
+🤖 Automated weekly health check via GitHub Actions`;
+
+            // Try to create discussion (requires discussions to be enabled)
+            try {
+              // Note: This requires the repository to have Discussions enabled
+              // If not enabled, this will gracefully skip
+              const query = `
+                mutation($repositoryId: ID!, $categoryId: ID!, $title: String!, $body: String!) {
+                  createDiscussion(input: {
+                    repositoryId: $repositoryId,
+                    categoryId: $categoryId,
+                    title: $title,
+                    body: $body
+                  }) {
+                    discussion {
+                      url
+                    }
+                  }
+                }
+              `;
+
+              // This is a placeholder - actual implementation would need discussion category ID
+              console.log('Discussion creation skipped - implement with actual category ID');
+            } catch (error) {
+              console.log('Discussions not enabled or error creating discussion:', error.message);
+            }
+
+      - name: Create issue if critical errors found
+        if: steps.health.outputs.status == 'ERRORS'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('health-report.txt', 'utf8');
+            const date = new Date().toISOString().split('T')[0];
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Weekly Health Check Failed - ${date}`,
+              body: `Critical errors detected in weekly health check.
+
+## Summary
+- Errors: ${{ steps.health.outputs.error_count }}
+- Warnings: ${{ steps.health.outputs.warning_count }}
+
+## Health Check Output
+\`\`\`
+${report.substring(0, 5000)}
+\`\`\`
+
+## Immediate Actions Required
+1. Review the [full report](${context.payload.repository.html_url}/actions/runs/${context.runId})
+2. Run detailed analysis: \`./scripts/sync-check-advanced.sh\`
+3. Consult [remediation workflows](docs/SYNC-REFERENCE-MODELS.md#remediation-workflows)
+4. Fix issues before next development session
+
+## Resources
+- [Health Check Script](scripts/health-check.sh)
+- [Sync Reference Models](docs/SYNC-REFERENCE-MODELS.md)
+- [Governance Policies](docs/GOVERNANCE.md)`,
+              labels: ['health-check', 'critical', 'needs-attention', 'automated']
+            });
+
+      - name: Post summary
+        run: |
+          echo "### Weekly Health Check Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ steps.health.outputs.status_emoji }} ${{ steps.health.outputs.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Success | ${{ steps.health.outputs.success_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚠️ Warnings | ${{ steps.health.outputs.warning_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Errors | ${{ steps.health.outputs.error_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See [artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for full reports." >> $GITHUB_STEP_SUMMARY
