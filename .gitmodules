@@ -16,3 +16,6 @@
 [submodule "versions/openspec"]
 	path = versions/openspec
 	url = https://github.com/rhart696/true-valence-mapper-openspec.git
+[submodule "versions/Gemini_3"]
+	path = versions/Gemini_3
+	url = git@github.com:rhart696/true-valence-mapper-Gemini_3.git
