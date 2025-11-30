@@ -6,16 +6,16 @@
 	url = git@github.com:rhart696/true-valence-mapper-codex.git
 [submodule "versions/bmad"]
 	path = versions/bmad
-	url = https://github.com/rhart696/true-valence-mapper-bmad.git
+	url = git@github.com:rhart696/true-valence-mapper-bmad.git
 [submodule "versions/spec-kit"]
 	path = versions/spec-kit
-	url = https://github.com/rhart696/true-valence-mapper-spec-kit.git
+	url = git@github.com:rhart696/true-valence-mapper-spec-kit.git
 [submodule "versions/magic-path"]
 	path = versions/magic-path
-	url = https://github.com/rhart696/true-valence-mapper-magic-path.git
+	url = git@github.com:rhart696/true-valence-mapper-magic-path.git
 [submodule "versions/openspec"]
 	path = versions/openspec
-	url = https://github.com/rhart696/true-valence-mapper-openspec.git
+	url = git@github.com:rhart696/true-valence-mapper-openspec.git
 [submodule "versions/Gemini_3"]
 	path = versions/Gemini_3
 	url = git@github.com:rhart696/true-valence-mapper-Gemini_3.git

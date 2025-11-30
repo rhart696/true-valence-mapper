@@ -9,17 +9,62 @@ This document defines how different AI-led editions coordinate development and s
 3. **Opt-In Adoption**: Editions choose when to adopt shared components
 4. **Evidence-Based**: Decisions driven by metrics and validation, not speculation
 
-## Weekly Sync Schedule
+## Synchronization Policies
+
+### Repository Sync Requirements
+
+**Frequency**: After every development session (before closing IDE)
+**Validation**: Weekly health checks (Mondays, 10:00 AM)
+**Tools**:
+- `./scripts/health-check.sh` - Quick validation
+- `./scripts/sync-check-advanced.sh` - Detailed analysis
+
+**Mandatory Sync Actions**:
+1. **After Each Work Session**:
+   ```bash
+   # In standalone repo
+   git add -A
+   git commit -m "descriptive message"
+   git push origin main
+   ```
+
+2. **Weekly Validation**:
+   ```bash
+   # In parent repo
+   ./scripts/health-check.sh
+   # Fix any warnings immediately
+   ```
+
+3. **Monthly Deep Check**:
+   ```bash
+   # In parent repo
+   ./scripts/sync-check-advanced.sh --report
+   # Review reports/ directory for issues
+   ```
+
+**Reference Models**: See [SYNC-REFERENCE-MODELS.md](SYNC-REFERENCE-MODELS.md) for examples of perfect sync:
+- **codex**: Gold standard for commit hygiene
+- **magic-path**: Stable development workflow
+- **openspec**: Minimalist but clean sync
+
+**Anti-Patterns to Avoid**:
+- ❌ Uncommitted work accumulation (commit regularly!)
+- ❌ Forgetting to push to remote
+- ❌ Working directly in `versions/` submodules (use standalone only)
+- ❌ Using HTTPS remote URLs (use SSH)
+
+### Weekly Sync Schedule
 
 **When**: Every Monday, 10:00 AM (documented async if solo developer)
 **Duration**: 30 minutes
 **Attendees**: Edition leads (human + primary AI agent per edition)
 
 **Agenda**:
-1. Edition status updates (5 min each)
-2. Demo new features (10 min)
-3. Promotion candidates (10 min)
-4. Blockers and cross-edition issues (5 min)
+1. **Repository health review** (5 min) - Review health-check.sh output
+2. Edition status updates (5 min each)
+3. Demo new features (10 min)
+4. Promotion candidates (10 min)
+5. Blockers and cross-edition issues (5 min)
 
 ## Feature Promotion Workflow
 
@@ -191,6 +236,6 @@ This governance document can be updated:
 
 ---
 
-**Version**: 1.0.0
-**Last updated**: 2025-11-17
-**Next review**: 2025-12-17 (monthly)
+**Version**: 1.1.0
+**Last updated**: 2025-11-30 (Added synchronization policies and reference models)
+**Next review**: 2025-12-30 (monthly)
