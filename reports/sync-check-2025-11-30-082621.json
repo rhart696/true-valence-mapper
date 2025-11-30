@@ -1,0 +1,17 @@
+{"timestamp": "2025-11-30-082621", "editions": {
+    "claude": {
+      "submodule_commit": "ce332f7e",
+      "standalone_commit": "0768b551",
+      "commits_match": false,
+      "submodule_dirty": 2,
+      "submodule_untracked": 0,
+      "standalone_exists": true
+    },
+    "codex": {
+      "submodule_commit": "4ddb6b56",
+      "standalone_commit": "4ddb6b56",
+      "commits_match": true,
+      "submodule_dirty": 0,
+      "submodule_untracked": 0,
+      "standalone_exists": true
+    },

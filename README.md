@@ -129,6 +129,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 MIT License - see [LICENSE](LICENSE)
 
+## Architecture Documentation
+
+**New to this project?** Start here:
+- 📖 [Repository Structure Explained](docs/REPOSITORY-STRUCTURE.md) - **Read this first!** Explains the dual-location pattern
+- 🏛️ [Architecture Rationale](docs/ARCHITECTURE.md) - Why we use polyrepo with submodules
+- 📋 [Governance Model](docs/GOVERNANCE.md) - How editions coordinate
+
+**Quick Health Check:**
+```bash
+./scripts/health-check.sh
+```
+
 ## Links
 
 - [Multi-Agent Version Plan](https://github.com/rhart696/true-valence-mapper-claude/blob/main/docs/planning/MULTI-AGENT-VERSION-PLAN.md)
