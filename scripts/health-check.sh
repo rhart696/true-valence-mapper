@@ -244,6 +244,60 @@ else
 fi
 echo
 
+# Check 7: AGENTS.md governance files
+echo "📋 Checking AGENTS.md governance files..."
+TEMPLATE_FILE="$PARENT/shared/templates/AGENTS.md.template"
+EDITIONS_FILE="$PARENT/shared/templates/editions.json"
+
+if [[ ! -f "$TEMPLATE_FILE" ]]; then
+    log_warning "AGENTS.md template not found at $TEMPLATE_FILE"
+else
+    log_success "AGENTS.md template found"
+    TEMPLATE_VERSION=$(jq -r '.template_version' "$EDITIONS_FILE" 2>/dev/null || echo "unknown")
+    echo "     Template version: $TEMPLATE_VERSION"
+fi
+
+# Check AGENTS.md in each edition
+for edition in "${EDITIONS[@]}"; do
+    standalone_path="/home/ichardart/dev/projects/true-valence-mapper-$edition"
+
+    if [[ ! -d "$standalone_path" ]]; then
+        continue
+    fi
+
+    agents_file="$standalone_path/AGENTS.md"
+    claude_file="$standalone_path/CLAUDE.md"
+
+    if [[ -f "$agents_file" ]]; then
+        # Check template version in file
+        file_version=$(grep "Template version:" "$agents_file" 2>/dev/null | sed 's/.*: //' || echo "unknown")
+        if [[ "$file_version" != "$TEMPLATE_VERSION" ]] && [[ "$TEMPLATE_VERSION" != "unknown" ]]; then
+            log_warning "$edition: AGENTS.md version mismatch (file: $file_version, template: $TEMPLATE_VERSION)"
+        else
+            log_success "$edition: AGENTS.md present (v$file_version)"
+        fi
+
+        # Check CLAUDE.md symlink
+        if [[ -L "$claude_file" ]]; then
+            target=$(readlink "$claude_file")
+            if [[ "$target" == "AGENTS.md" ]]; then
+                if [[ "$VERBOSE" == true ]]; then
+                    echo "     CLAUDE.md symlink: OK"
+                fi
+            else
+                log_warning "$edition: CLAUDE.md symlink points to wrong target ($target)"
+            fi
+        elif [[ -f "$claude_file" ]]; then
+            log_warning "$edition: CLAUDE.md exists but is not a symlink (should link to AGENTS.md)"
+        else
+            log_warning "$edition: CLAUDE.md missing (run: cd $standalone_path && ln -s AGENTS.md CLAUDE.md)"
+        fi
+    else
+        log_warning "$edition: AGENTS.md missing (run: ./scripts/deploy-governance-files.sh)"
+    fi
+done
+echo
+
 # Summary
 echo "════════════════════════════════════════════════════════════════"
 echo "  Health Check Summary"

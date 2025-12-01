@@ -1,0 +1,132 @@
+name: Sync Governance Files to Editions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'shared/templates/AGENTS.md.template'
+      - 'shared/templates/editions.json'
+      - '.github/workflows/sync-governance-files.yml'
+
+  workflow_dispatch:
+    inputs:
+      editions:
+        description: 'Comma-separated edition names (or "all")'
+        required: false
+        default: 'all'
+        type: string
+      dry_run:
+        description: 'Dry run (no actual changes)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  sync-files:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        edition: [claude, codex, bmad, spec-kit, magic-path, openspec]
+      fail-fast: false
+
+    steps:
+      - name: Checkout parent repo
+        uses: actions/checkout@v4
+
+      - name: Check if edition should be synced
+        id: check
+        run: |
+          EDITIONS="${{ github.event.inputs.editions || 'all' }}"
+          CURRENT="${{ matrix.edition }}"
+
+          if [ "$EDITIONS" = "all" ] || echo "$EDITIONS" | grep -q "$CURRENT"; then
+            echo "should_sync=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_sync=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Load edition config
+        if: steps.check.outputs.should_sync == 'true'
+        id: config
+        run: |
+          EDITION="${{ matrix.edition }}"
+          CONFIG=$(cat shared/templates/editions.json)
+
+          NAME=$(echo "$CONFIG" | jq -r ".editions[\"$EDITION\"].name")
+          FOCUS=$(echo "$CONFIG" | jq -r ".editions[\"$EDITION\"].focus")
+          REPO=$(echo "$CONFIG" | jq -r ".editions[\"$EDITION\"].repo")
+          VERSION=$(echo "$CONFIG" | jq -r ".template_version")
+
+          echo "edition_name=$NAME" >> $GITHUB_OUTPUT
+          echo "edition_focus=$FOCUS" >> $GITHUB_OUTPUT
+          echo "edition_repo=$REPO" >> $GITHUB_OUTPUT
+          echo "template_version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Generate AGENTS.md from template
+        if: steps.check.outputs.should_sync == 'true'
+        id: generate
+        run: |
+          TEMPLATE="shared/templates/AGENTS.md.template"
+          OUTPUT="generated-AGENTS.md"
+          SYNC_DATE=$(date -u +"%Y-%m-%d")
+
+          sed -e "s/{{EDITION_NAME}}/${{ steps.config.outputs.edition_name }}/g" \
+              -e "s/{{EDITION_FOCUS}}/${{ steps.config.outputs.edition_focus }}/g" \
+              -e "s/{{TEMPLATE_VERSION}}/${{ steps.config.outputs.template_version }}/g" \
+              -e "s/{{SYNC_DATE}}/$SYNC_DATE/g" \
+              "$TEMPLATE" > "$OUTPUT"
+
+          echo "Generated AGENTS.md for ${{ matrix.edition }}"
+          cat "$OUTPUT"
+
+      - name: Checkout edition repo
+        if: steps.check.outputs.should_sync == 'true' && github.event.inputs.dry_run != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: rhart696/${{ steps.config.outputs.edition_repo }}
+          token: ${{ secrets.EDITION_SYNC_TOKEN }}
+          path: edition-repo
+
+      - name: Sync files to edition
+        if: steps.check.outputs.should_sync == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          cp generated-AGENTS.md edition-repo/AGENTS.md
+
+          cd edition-repo
+
+          if [ -f "CLAUDE.md" ] && [ ! -L "CLAUDE.md" ]; then
+            rm CLAUDE.md
+          fi
+
+          if [ ! -L "CLAUDE.md" ]; then
+            ln -sf AGENTS.md CLAUDE.md
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes to commit for ${{ matrix.edition }}"
+            exit 0
+          fi
+
+          git add AGENTS.md CLAUDE.md
+          git commit -m "chore: sync AGENTS.md from parent repo template
+
+Template version: ${{ steps.config.outputs.template_version }}
+Triggered by: ${{ github.event_name }}
+
+Automated governance file sync from parent repository."
+
+          git push origin main
+
+      - name: Summary
+        if: steps.check.outputs.should_sync == 'true'
+        run: |
+          echo "### ${{ matrix.edition }} Edition" >> $GITHUB_STEP_SUMMARY
+          echo "- Repository: ${{ steps.config.outputs.edition_repo }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Template Version: ${{ steps.config.outputs.template_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Dry Run: ${{ github.event.inputs.dry_run || 'false' }}" >> $GITHUB_STEP_SUMMARY

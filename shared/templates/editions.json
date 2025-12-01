@@ -1,0 +1,41 @@
+{
+  "template_version": "1.0.0",
+  "editions": {
+    "claude": {
+      "name": "Claude Code",
+      "focus": "Reference implementation, security-first development, baseline architecture",
+      "repo": "true-valence-mapper-claude",
+      "status": "active"
+    },
+    "codex": {
+      "name": "Codex",
+      "focus": "GitHub Copilot/Codex-led development, engineering workflow optimization",
+      "repo": "true-valence-mapper-codex",
+      "status": "development"
+    },
+    "bmad": {
+      "name": "BMAD",
+      "focus": "BMAD-METHOD v6-alpha integration, requirements modeling and validation workflows",
+      "repo": "true-valence-mapper-bmad",
+      "status": "development"
+    },
+    "spec-kit": {
+      "name": "Spec-Kit",
+      "focus": "GitHub Spec-Kit integration, specification-driven development with AI agent guidance",
+      "repo": "true-valence-mapper-spec-kit",
+      "status": "development"
+    },
+    "magic-path": {
+      "name": "Magic-Path",
+      "focus": "Custom UX methodology, intuitive workflows and visual storytelling",
+      "repo": "true-valence-mapper-magic-path",
+      "status": "development"
+    },
+    "openspec": {
+      "name": "OpenSpec",
+      "focus": "OpenSpec v0.15.0 integration, AI-assisted specification generation",
+      "repo": "true-valence-mapper-openspec",
+      "status": "development"
+    }
+  }
+}
