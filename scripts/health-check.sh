@@ -41,12 +41,12 @@ log_success() {
 
 log_warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
-    ((WARNINGS++))
+    ((WARNINGS++)) || true
 }
 
 log_error() {
     echo -e "${RED}❌ $1${NC}"
-    ((ERRORS++))
+    ((ERRORS++)) || true
 }
 
 # Header
@@ -269,8 +269,8 @@ for edition in "${EDITIONS[@]}"; do
     claude_file="$standalone_path/CLAUDE.md"
 
     if [[ -f "$agents_file" ]]; then
-        # Check template version in file
-        file_version=$(grep "Template version:" "$agents_file" 2>/dev/null | sed 's/.*: //' || echo "unknown")
+        # Check template version in file (strip markdown formatting like *italics*)
+        file_version=$(grep "Template version:" "$agents_file" 2>/dev/null | sed 's/.*: //' | tr -d '*' || echo "unknown")
         if [[ "$file_version" != "$TEMPLATE_VERSION" ]] && [[ "$TEMPLATE_VERSION" != "unknown" ]]; then
             log_warning "$edition: AGENTS.md version mismatch (file: $file_version, template: $TEMPLATE_VERSION)"
         else
