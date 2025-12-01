@@ -70,8 +70,14 @@ cd true-valence-mapper
 ### Update All Editions
 
 ```bash
+# Manual update (if automation not configured)
 git submodule update --remote --merge
+
+# Or use health check to verify sync status
+./scripts/health-check.sh
 ```
+
+> **Note:** If you've configured GitHub Actions automation, submodules auto-update when editions are pushed. See [GitHub Automation Setup](docs/GITHUB-AUTOMATION-SETUP-GUIDE.md).
 
 ### Check Edition Status
 
