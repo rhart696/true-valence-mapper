@@ -75,8 +75,8 @@ jobs:
           OUTPUT="generated-AGENTS.md"
           SYNC_DATE=$(date -u +"%Y-%m-%d")
 
-          sed -e "s/{{EDITION_NAME}}/${{ steps.config.outputs.edition_name }}/g" \
-              -e "s/{{EDITION_FOCUS}}/${{ steps.config.outputs.edition_focus }}/g" \
+          sed -e "s|{{EDITION_NAME}}|${{ steps.config.outputs.edition_name }}|g" \
+              -e "s|{{EDITION_FOCUS}}|${{ steps.config.outputs.edition_focus }}|g" \
               -e "s/{{TEMPLATE_VERSION}}/${{ steps.config.outputs.template_version }}/g" \
               -e "s/{{SYNC_DATE}}/$SYNC_DATE/g" \
               "$TEMPLATE" > "$OUTPUT"
