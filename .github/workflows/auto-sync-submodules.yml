@@ -38,8 +38,10 @@ jobs:
           echo "Updating submodule: versions/$EDITION"
           echo "edition=$EDITION" >> $GITHUB_OUTPUT
 
+          cd "versions/$EDITION"
           git fetch origin
-          git submodule update --remote --merge "versions/$EDITION"
+          git checkout origin/main
+          cd ../..
 
           if git diff --quiet HEAD; then
             echo "No changes to commit"
