@@ -1,11 +1,9 @@
 name: Auto-Sync Submodules
 
 on:
-  # Trigger on repository dispatch from edition repos
   repository_dispatch:
     types: [edition-updated]
 
-  # Allow manual trigger for testing
   workflow_dispatch:
     inputs:
       edition:
@@ -40,13 +38,9 @@ jobs:
           echo "Updating submodule: versions/$EDITION"
           echo "edition=$EDITION" >> $GITHUB_OUTPUT
 
-          # Fetch latest from remote
           git fetch origin
-
-          # Update specific submodule to remote HEAD
           git submodule update --remote --merge "versions/$EDITION"
 
-          # Check if there are changes
           if git diff --quiet HEAD; then
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -54,8 +48,6 @@ jobs:
           fi
 
           echo "has_changes=true" >> $GITHUB_OUTPUT
-
-          # Get the commit info from the submodule
           SUBMODULE_COMMIT=$(git -C "versions/$EDITION" log -1 --format='%h - %s')
           echo "submodule_commit=$SUBMODULE_COMMIT" >> $GITHUB_OUTPUT
 
@@ -66,17 +58,13 @@ jobs:
           SUBMODULE_COMMIT="${{ steps.update.outputs.submodule_commit }}"
 
           git add "versions/$EDITION"
-          git commit -m "chore: auto-update $EDITION submodule to latest
-
-Edition $EDITION was updated: $SUBMODULE_COMMIT
-
-🤖 Automated submodule sync via GitHub Actions"
-
+          git commit -m "chore: auto-update $EDITION submodule to latest"
           git push origin main
 
       - name: Run health check
         id: health_check
         if: steps.update.outputs.has_changes == 'true'
+        continue-on-error: true
         run: |
           chmod +x scripts/health-check.sh
           ./scripts/health-check.sh > health-check-output.txt 2>&1
@@ -84,7 +72,6 @@ Edition $EDITION was updated: $SUBMODULE_COMMIT
           echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
           cat health-check-output.txt
           exit $EXIT_CODE
-        continue-on-error: true
 
       - name: Create issue if health check fails
         if: steps.update.outputs.has_changes == 'true' && steps.health_check.outputs.exit_code != '0'
@@ -93,29 +80,16 @@ Edition $EDITION was updated: $SUBMODULE_COMMIT
           script: |
             const edition = '${{ steps.update.outputs.edition }}';
             const commit = '${{ steps.update.outputs.submodule_commit }}';
-
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Health Check Failed After Auto-Sync: ${edition}`,
-              body: `Automated submodule sync completed for **${edition}** but health check failed.
-
-**Submodule Update:** ${commit}
-
-**Action Required:**
-1. Review the health check output in the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId})
-2. Run manual sync check: \`./scripts/sync-check-advanced.sh --edition ${edition}\`
-3. Resolve any sync issues
-
-**Next Steps:**
-- If this is a temporary issue, it may resolve on the next sync
-- If persistent, review the edition's recent changes
-- Consult [SYNC-REFERENCE-MODELS.md](docs/SYNC-REFERENCE-MODELS.md) for guidance`,
-              labels: ['automation', 'health-check', 'needs-attention', `edition:${edition}`]
+              title: 'Health Check Failed After Auto-Sync: ' + edition,
+              body: 'Automated submodule sync completed for **' + edition + '** but health check failed.\n\n**Submodule Update:** ' + commit + '\n\nPlease review the workflow run and resolve any sync issues.',
+              labels: ['automation', 'health-check', 'needs-attention']
             });
 
-      - name: Comment on success
+      - name: Log success
         if: steps.update.outputs.has_changes == 'true' && steps.health_check.outputs.exit_code == '0'
         run: |
-          echo "✅ Auto-sync completed successfully for ${{ steps.update.outputs.edition }}"
-          echo "Health check passed - all editions synchronized"
+          echo "Auto-sync completed successfully for ${{ steps.update.outputs.edition }}"
+          echo "Health check passed"
