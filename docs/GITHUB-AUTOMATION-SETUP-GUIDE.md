@@ -224,9 +224,51 @@ git push origin main
 
 ---
 
-## Step 5: Configure Optional Features
+## Step 5: Setup AGENTS.md Governance Sync (Optional)
 
-### 5.1 Enable GitHub Discussions (Optional)
+**Duration:** 10 minutes
+
+The parent repository can automatically sync AGENTS.md governance files to all editions when the template changes.
+
+### 5.1 Create EDITION_SYNC_TOKEN
+
+This token allows the parent repo to push AGENTS.md updates to edition repos.
+
+1. Go to: https://github.com/settings/tokens
+2. Click **"Generate new token (classic)"**
+3. Configure:
+   - **Note:** `True Valence Mapper - Edition Sync`
+   - **Expiration:** `No expiration` (or 1 year)
+   - **Scopes:** Select **`repo`** (full control of private repositories)
+4. Click **"Generate token"**
+5. Copy the token
+
+### 5.2 Add Token to Parent Repository
+
+1. Go to: https://github.com/rhart696/true-valence-mapper/settings/secrets/actions
+2. Click **"New repository secret"**
+3. Configure:
+   - **Name:** `EDITION_SYNC_TOKEN`
+   - **Value:** Paste the PAT
+4. Click **"Add secret"**
+
+### 5.3 Test Governance Sync
+
+1. Edit `shared/templates/AGENTS.md.template`
+2. Commit and push to main
+3. Check Actions tab for "Sync Governance Files to Editions" workflow
+4. Verify AGENTS.md updated in all edition repos
+
+**Note:** For initial deployment or manual sync, use:
+```bash
+./scripts/deploy-governance-files.sh
+```
+
+---
+
+## Step 6: Configure Other Optional Features
+
+### 6.1 Enable GitHub Discussions (Optional)
 
 **For weekly health check reports:**
 
@@ -236,7 +278,7 @@ git push origin main
 4. Create category: **"Weekly Sync"**
 5. Weekly reports will post to Discussions automatically
 
-### 5.2 Add Slack Integration (Optional)
+### 6.2 Add Slack Integration (Optional)
 
 **For failure notifications:**
 
@@ -483,7 +525,7 @@ You'll know setup is successful when:
 
 ---
 
-**Last Updated:** 2025-11-30
+**Last Updated:** 2025-12-01
 **Maintained By:** Repository Automation Team
 **Time to Complete:** ~30 minutes
 **Estimated ROI:** 10+ hours saved per month
