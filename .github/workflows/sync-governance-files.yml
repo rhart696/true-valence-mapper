@@ -1,5 +1,7 @@
 name: Sync Governance Files to Editions
 
+# Syncs AGENTS.md template to all edition repositories
+
 on:
   push:
     branches: [main]
@@ -114,13 +116,7 @@ jobs:
           fi
 
           git add AGENTS.md CLAUDE.md
-          git commit -m "chore: sync AGENTS.md from parent repo template
-
-Template version: ${{ steps.config.outputs.template_version }}
-Triggered by: ${{ github.event_name }}
-
-Automated governance file sync from parent repository."
-
+          git commit -m "chore: sync AGENTS.md from parent repo template (v${{ steps.config.outputs.template_version }})"
           git push origin main
 
       - name: Summary
