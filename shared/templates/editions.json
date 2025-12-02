@@ -36,6 +36,12 @@
       "focus": "OpenSpec v0.15.0 integration, AI-assisted specification generation",
       "repo": "true-valence-mapper-openspec",
       "status": "development"
+    },
+    "Gemini_3": {
+      "name": "Gemini 3",
+      "focus": "Google Gemini-led development, Antigravity IDE optimization",
+      "repo": "true-valence-mapper-Gemini_3",
+      "status": "active"
     }
   }
 }
