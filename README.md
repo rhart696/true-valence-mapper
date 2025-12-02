@@ -147,6 +147,18 @@ MIT License - see [LICENSE](LICENSE)
 ./scripts/health-check.sh
 ```
 
+## For AI Agents
+
+> **🤖 AI Agents:** Read [AGENTS.md](./AGENTS.md) before taking any action in this repository.
+
+| Resource | Purpose |
+|----------|---------|
+| [AGENTS.md](./AGENTS.md) | Governance rules for this parent repository |
+| [Governance Workflow](./docs/GOVERNANCE-WORKFLOW.md) | Complete governance reference |
+| [Edition AGENTS.md](./shared/templates/AGENTS.md.template) | Template synced to all editions |
+
+**Key principle:** This is an orchestration repository. For code development, work in a [standalone edition repository](#editions) instead.
+
 ## Links
 
 - [Multi-Agent Version Plan](https://github.com/rhart696/true-valence-mapper-claude/blob/main/docs/planning/MULTI-AGENT-VERSION-PLAN.md)

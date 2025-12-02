@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        edition: [claude, codex, bmad, spec-kit, magic-path, openspec]
+        edition: [claude, codex, bmad, spec-kit, magic-path, openspec, Gemini_3]
       fail-fast: false
 
     steps:
@@ -84,6 +84,26 @@ jobs:
           echo "Generated AGENTS.md for ${{ matrix.edition }}"
           cat "$OUTPUT"
 
+      - name: Generate AGENTS.local.md from template (if template exists)
+        if: steps.check.outputs.should_sync == 'true'
+        id: generate_local
+        run: |
+          TEMPLATE="shared/templates/AGENTS.local.md.template"
+          OUTPUT="generated-AGENTS.local.md"
+          SYNC_DATE=$(date -u +"%Y-%m-%d")
+
+          if [ -f "$TEMPLATE" ]; then
+            sed -e "s|{{EDITION_NAME}}|${{ steps.config.outputs.edition_name }}|g" \
+                -e "s|{{EDITION_FOCUS}}|${{ steps.config.outputs.edition_focus }}|g" \
+                -e "s/{{SYNC_DATE}}/$SYNC_DATE/g" \
+                "$TEMPLATE" > "$OUTPUT"
+            echo "generated=true" >> $GITHUB_OUTPUT
+            echo "Generated AGENTS.local.md template for ${{ matrix.edition }}"
+          else
+            echo "generated=false" >> $GITHUB_OUTPUT
+            echo "No AGENTS.local.md template found, skipping"
+          fi
+
       - name: Checkout edition repo
         if: steps.check.outputs.should_sync == 'true' && github.event.inputs.dry_run != 'true'
         uses: actions/checkout@v4
@@ -95,16 +115,26 @@ jobs:
       - name: Sync files to edition
         if: steps.check.outputs.should_sync == 'true' && github.event.inputs.dry_run != 'true'
         run: |
+          # Always sync AGENTS.md (overwrites existing)
           cp generated-AGENTS.md edition-repo/AGENTS.md
 
           cd edition-repo
 
+          # Create CLAUDE.md symlink if needed
           if [ -f "CLAUDE.md" ] && [ ! -L "CLAUDE.md" ]; then
             rm CLAUDE.md
           fi
 
           if [ ! -L "CLAUDE.md" ]; then
             ln -sf AGENTS.md CLAUDE.md
+          fi
+
+          # Only create AGENTS.local.md if it doesn't exist (preserve edition-specific content)
+          if [ ! -f "AGENTS.local.md" ] && [ -f "../generated-AGENTS.local.md" ]; then
+            cp ../generated-AGENTS.local.md AGENTS.local.md
+            echo "Created new AGENTS.local.md for ${{ matrix.edition }}"
+          else
+            echo "AGENTS.local.md already exists or template not generated, preserving existing"
           fi
 
           git config user.name "github-actions[bot]"
@@ -116,6 +146,10 @@ jobs:
           fi
 
           git add AGENTS.md CLAUDE.md
+          # Add AGENTS.local.md only if it exists and was just created
+          if [ -f "AGENTS.local.md" ]; then
+            git add AGENTS.local.md
+          fi
           git commit -m "chore: sync AGENTS.md from parent repo template (v${{ steps.config.outputs.template_version }})"
           git push origin main
 

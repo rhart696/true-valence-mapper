@@ -247,6 +247,7 @@ echo
 # Check 7: AGENTS.md governance files
 echo "📋 Checking AGENTS.md governance files..."
 TEMPLATE_FILE="$PARENT/shared/templates/AGENTS.md.template"
+LOCAL_TEMPLATE_FILE="$PARENT/shared/templates/AGENTS.local.md.template"
 EDITIONS_FILE="$PARENT/shared/templates/editions.json"
 
 if [[ ! -f "$TEMPLATE_FILE" ]]; then
@@ -255,6 +256,12 @@ else
     log_success "AGENTS.md template found"
     TEMPLATE_VERSION=$(jq -r '.template_version' "$EDITIONS_FILE" 2>/dev/null || echo "unknown")
     echo "     Template version: $TEMPLATE_VERSION"
+fi
+
+if [[ ! -f "$LOCAL_TEMPLATE_FILE" ]]; then
+    log_info "AGENTS.local.md template not found (optional)"
+else
+    log_success "AGENTS.local.md template found"
 fi
 
 # Check AGENTS.md in each edition
@@ -266,6 +273,7 @@ for edition in "${EDITIONS[@]}"; do
     fi
 
     agents_file="$standalone_path/AGENTS.md"
+    agents_local_file="$standalone_path/AGENTS.local.md"
     claude_file="$standalone_path/CLAUDE.md"
 
     if [[ -f "$agents_file" ]]; then
@@ -275,6 +283,17 @@ for edition in "${EDITIONS[@]}"; do
             log_warning "$edition: AGENTS.md version mismatch (file: $file_version, template: $TEMPLATE_VERSION)"
         else
             log_success "$edition: AGENTS.md present (v$file_version)"
+        fi
+
+        # Check AGENTS.local.md presence
+        if [[ -f "$agents_local_file" ]]; then
+            if [[ "$VERBOSE" == true ]]; then
+                echo "     AGENTS.local.md: present (edition-specific governance)"
+            fi
+        else
+            if [[ "$VERBOSE" == true ]]; then
+                echo "     AGENTS.local.md: not present (using global governance only)"
+            fi
         fi
 
         # Check CLAUDE.md symlink
