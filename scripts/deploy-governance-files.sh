@@ -7,6 +7,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PARENT_DIR="$(dirname "$SCRIPT_DIR")"
 TEMPLATE_FILE="$PARENT_DIR/shared/templates/AGENTS.md.template"
+LOCAL_TEMPLATE_FILE="$PARENT_DIR/shared/templates/AGENTS.local.md.template"
 EDITIONS_FILE="$PARENT_DIR/shared/templates/editions.json"
 
 DRY_RUN=false
@@ -107,6 +108,7 @@ for EDITION in $EDITIONS; do
     if [ "$DRY_RUN" = true ]; then
         echo -e "${YELLOW}  Would create/update AGENTS.md${NC}"
         echo -e "${YELLOW}  Would create symlink CLAUDE.md -> AGENTS.md${NC}"
+        echo -e "${YELLOW}  Would create AGENTS.local.md (if not exists)${NC}"
     else
         # Copy AGENTS.md
         cp "$GENERATED_FILE" "$EDITION_PATH/AGENTS.md"
@@ -124,18 +126,36 @@ for EDITION in $EDITIONS; do
             echo -e "${GREEN}  CLAUDE.md symlink already exists${NC}"
         fi
 
+        # Create AGENTS.local.md only if it doesn't exist (preserve edition-specific content)
+        if [ ! -f "AGENTS.local.md" ] && [ -f "$LOCAL_TEMPLATE_FILE" ]; then
+            sed -e "s/{{EDITION_NAME}}/$EDITION_NAME/g" \
+                -e "s|{{EDITION_FOCUS}}|$EDITION_FOCUS|g" \
+                -e "s/{{SYNC_DATE}}/$SYNC_DATE/g" \
+                "$LOCAL_TEMPLATE_FILE" > "AGENTS.local.md"
+            echo -e "${GREEN}  Created AGENTS.local.md (edition-specific)${NC}"
+        else
+            echo -e "${YELLOW}  AGENTS.local.md already exists (preserved)${NC}"
+        fi
+
         # Git operations
-        if git diff --quiet AGENTS.md 2>/dev/null; then
+        if git diff --quiet AGENTS.md 2>/dev/null && git diff --quiet AGENTS.local.md 2>/dev/null; then
             echo -e "${YELLOW}  No changes to commit${NC}"
         else
             git add AGENTS.md CLAUDE.md
-            git commit -m "chore: add AGENTS.md governance file from parent template
+            if [ -f "AGENTS.local.md" ]; then
+                git add AGENTS.local.md
+            fi
+            git commit -m "chore: sync governance files from parent template (v$TEMPLATE_VERSION)
 
 Template version: $TEMPLATE_VERSION
 Sync date: $SYNC_DATE
 
-This file is auto-generated from the parent repository template.
-See: https://github.com/rhart696/true-valence-mapper/blob/main/shared/templates/AGENTS.md.template"
+Files synced:
+- AGENTS.md (always updated)
+- CLAUDE.md (symlink)
+- AGENTS.local.md (created if new)
+
+See: https://github.com/rhart696/true-valence-mapper/blob/main/docs/GOVERNANCE-WORKFLOW.md"
             echo -e "${GREEN}  Committed changes${NC}"
         fi
 
