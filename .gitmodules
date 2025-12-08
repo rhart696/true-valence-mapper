@@ -19,3 +19,6 @@
 [submodule "versions/Gemini_3"]
 	path = versions/Gemini_3
 	url = git@github.com:rhart696/true-valence-mapper-Gemini_3.git
+[submodule "versions/true-valence-mapper-antigravity"]
+	path = versions/true-valence-mapper-antigravity
+	url = git@github.com:rhart696/true-valence-mapper-antigravity.git
