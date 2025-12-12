@@ -121,6 +121,29 @@ Records major decisions, rationale, and outcomes for the multi-agent architectur
 
 ---
 
+### 2025-12-10: Cross-Edition Comparative Analysis (Research Phase)
+
+**Context**: Learning/research exercise comparing outputs and outcomes from 5 different AI agent tools/methodologies across parallel editions (BMAD, Claude, Spec-Kit, OpenSpec, Gemini_3).
+
+**Analysis Performed**: Comprehensive comparative analysis covering target users, trust frameworks, development methodologies, maturity levels, WCAG accessibility (documented in [reports/COMPARATIVE-EDITION-ANALYSIS-2025-12-10.md](../reports/COMPARATIVE-EDITION-ANALYSIS-2025-12-10.md))
+
+**Decision**: Continue maintaining all 5 editions for research purposes. Archive decision deferred until research project completes.
+
+**Success Criteria for Research**:
+- Document unique approaches and insights from each edition
+- Track divergence and convergence patterns
+- Identify best practices across methodologies
+- Enable evidence-based decisions about future direction
+
+**Outcome**: _To be updated as research progresses_
+
+**Metrics**: _To be tracked_
+- Edition-specific innovations documented
+- Cross-edition patterns identified
+- Lessons learned captured in retrospective PRDs
+
+---
+
 ## Template for New Decisions
 
 ```markdown
