@@ -7,6 +7,10 @@ on:
       - 'shared/**'
   workflow_dispatch:
 
+concurrency:
+  group: notify-editions-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   issues: write

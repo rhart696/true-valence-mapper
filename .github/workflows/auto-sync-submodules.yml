@@ -11,6 +11,10 @@ on:
         required: true
         type: string
 
+concurrency:
+  group: auto-sync-${{ github.event.client_payload.edition || github.event.inputs.edition || 'manual' }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
   issues: write
