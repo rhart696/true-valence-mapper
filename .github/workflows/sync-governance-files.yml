@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Checkout parent repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Check if edition should be synced
         id: check
@@ -111,7 +111,7 @@ jobs:
 
       - name: Checkout edition repo
         if: steps.check.outputs.should_sync == 'true' && github.event.inputs.dry_run != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: rhart696/${{ steps.config.outputs.edition_repo }}
           token: ${{ secrets.EDITION_SYNC_TOKEN }}
