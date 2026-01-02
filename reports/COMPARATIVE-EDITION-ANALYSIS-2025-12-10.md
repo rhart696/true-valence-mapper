@@ -12,6 +12,7 @@
 1. [Executive Summary](#1-executive-summary)
 2. [Detailed Edition Summaries](#2-detailed-edition-summaries)
 3. [Comparative Analysis](#3-comparative-analysis)
+   - 3A. [PRD/Requirements Documentation Comparison Matrix](#3a-prdrequirements-documentation-comparison-matrix)
 4. [Strengths & Weaknesses Matrix](#4-strengths--weaknesses-matrix)
 5. [Recommended Optimized PRD](#5-recommended-optimized-prd)
 6. [Implementation Roadmap](#6-implementation-roadmap)
@@ -592,6 +593,335 @@ scoring      Medium/    Medium/     Valence       Medium/
 - **Ship-First vs. Spec-First:** Claude (code → docs) vs. Spec-Kit/OpenSpec (specs → code)
 
 **Recommendation Implication:** Hybrid approach - **Spec-driven for core features (quality), ship-fast for iterations (velocity)**.
+
+---
+
+## 3A. PRD/Requirements Documentation Comparison Matrix
+
+This section provides a detailed analysis of each edition's Product Requirements Document (PRD) - whether explicit or implied from documentation.
+
+### 3A.1 PRD Existence & Type Summary
+
+| Edition | PRD Type | Document Name | Lines | Location |
+|---------|----------|--------------|-------|----------|
+| **BMAD** | ✅ **Explicit PRD** | `prd.md` | 359 | `docs/bmad/02-planning/prd.md` |
+| **Claude** | ⚠️ **Implied** (scattered) | README + 70+ docs | ~15,000 | `README.md` + `docs/` |
+| **Spec-Kit** | ⚠️ **Implied** (framework-focused) | README | 136 | `README.md` |
+| **Magic-Path** | ⚠️ **Implied** (methodology-focused) | README | 180 | `README.md` |
+| **OpenSpec** | ⚠️ **Implied** (tool-focused) | README | 281 | `README.md` |
+| **Codex** | ❌ **Minimal** (initialization) | README | 75 | `README.md` |
+| **Gemini_3** | ❌ **Minimal** (initialization) | README | 75 | `README.md` |
+
+### 3A.2 PRD Completeness Matrix
+
+| PRD Element | BMAD | Claude | Spec-Kit | Magic-Path | OpenSpec | Codex | Gemini_3 |
+|------------|------|--------|----------|------------|----------|-------|----------|
+| **Product Overview** | ✅ Full | ✅ Full | ⚠️ Brief | ⚠️ Brief | ⚠️ Brief | ❌ None | ❌ None |
+| **Problem Statement** | ✅ Detailed | ⚠️ Implied | ⚠️ Implied | ⚠️ Implied | ⚠️ Implied | ❌ None | ❌ None |
+| **Target Users** | ✅ 3 tiers | ⚠️ 3 tiers | ⚠️ 2 tiers | ⚠️ General | ⚠️ Future | ❌ None | ❌ None |
+| **User Stories** | ✅ 18 stories | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None |
+| **Functional Reqs** | ✅ 20+ FRs | ⚠️ Feature list | ⚠️ Integration | ⚠️ Features | ⚠️ Integration | ❌ None | ❌ None |
+| **Non-Functional Reqs** | ✅ Performance/Security/Usability | ⚠️ Security docs | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None |
+| **Acceptance Criteria** | ✅ Gherkin format | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None |
+| **MVP Scope** | ✅ 3 releases | ⚠️ Roadmap | ⚠️ Roadmap | ⚠️ 3 phases | ❌ None | ❌ None | ❌ None |
+| **Success Metrics** | ✅ Business/Product/Methodology | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None |
+| **Tech Architecture** | ✅ High-level | ✅ Detailed (docs/) | ⚠️ Project struct | ⚠️ Planned | ⚠️ Config spec | ❌ None | ❌ None |
+| **Risks & Dependencies** | ✅ 4 risks, 4 deps | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None |
+| **Open Questions** | ✅ 9 questions | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None | ❌ None |
+
+**Legend:** ✅ Complete | ⚠️ Partial/Implied | ❌ Missing
+
+### 3A.3 Detailed PRD Analysis by Edition
+
+#### BMAD Edition - **Gold Standard PRD**
+
+**PRD Quality Score: 9.5/10**
+
+**What Makes It Excellent:**
+1. **Formal Structure:** Follows industry-standard PRD format (Overview → Requirements → Stories → Acceptance → Scope → Metrics → Risks)
+2. **Functional Requirements:** 20+ FRs organized into 5 categories (FR1-FR5) with priority levels (P0-P2)
+3. **User Stories:** 18 stories across 4 epics with `As a... I want... So that...` format
+4. **Acceptance Criteria:** Gherkin format (`GIVEN/WHEN/THEN`) for testable validation
+5. **Success Metrics:** 12 KPIs across Business, Product, and Methodology dimensions
+6. **Risk Analysis:** 4 risks with Impact/Likelihood/Mitigation matrix
+7. **Supporting Documents:** Project Brief (262 lines), Epic planning, User Stories (7,400+ lines)
+
+**PRD Contents Summary:**
+```
+Section 1: Product Overview (Name, Purpose, Problem, Users)
+Section 2: Core Requirements
+  - FR1: Authentication & Access Control (4 requirements)
+  - FR2: Relationship Mapping (5 requirements)
+  - FR3: Valence Assessment (4 requirements)
+  - FR4: Progress Tracking (4 requirements)
+  - FR5: ProActive Methodology Integration (4 requirements)
+  - NFR1-3: Performance, Security, Usability
+Section 3: User Stories (4 epics, 18 stories)
+Section 4: Acceptance Criteria (Gherkin format)
+Section 5: MVP Scope (Release 1.0, 1.1, 2.0)
+Section 6: Success Metrics (12 KPIs)
+Section 7: Technical Architecture
+Section 8: Risks & Dependencies
+Section 9: Open Questions (9 items)
+Section 10: Appendices (ProActive Principles, Differentiation)
+```
+
+**Gap:** No explicit usability testing targets or accessibility requirements (addressed in other docs)
+
+---
+
+#### Claude Edition - **Implementation-First PRD (Scattered)**
+
+**PRD Quality Score: 6.5/10** (as unified PRD) | **8.5/10** (as documentation suite)
+
+**What's Good:**
+1. **Production Completeness:** 70+ documentation files cover every implemented feature
+2. **Security Documentation:** Comprehensive XSS, RLS, auth risk analysis
+3. **Coach Facilitator Guide:** 20-page session workflow (substitute for user stories)
+4. **Real-World Validation:** Test reports, validation results, completion reports
+
+**What's Missing (for formal PRD):**
+1. ❌ No single PRD document (scattered across README + 70 docs)
+2. ❌ No formal user stories (`As a... I want...`)
+3. ❌ No acceptance criteria (Gherkin or otherwise)
+4. ❌ No success metrics defined upfront
+5. ❌ No risk analysis or open questions
+
+**Implied Requirements (from README.md):**
+```
+Core Features:
+- Visualize up to 8 key relationships
+- Score trust bidirectionally (1-3 scale)
+- Color-coded patterns (Green/Yellow/Red/Gray)
+- Save and reload maps (localStorage)
+- Works completely offline
+- Mobile responsive
+
+Technical Requirements:
+- Pure HTML/CSS/JavaScript (no dependencies)
+- SVG-based visualization
+- ~500 lines of clean code
+
+Security Requirements:
+- XSS protection
+- Input validation/sanitization
+- Row Level Security (RLS) with Supabase
+- SQL injection prevention
+```
+
+**Philosophy:** "Ship, don't infrastructure" - PRD emerged post-implementation
+
+---
+
+#### Spec-Kit Edition - **Framework Integration PRD**
+
+**PRD Quality Score: 4/10**
+
+**Focus:** GitHub Spec-Kit framework integration, not product requirements
+
+**Implied Requirements (from README.md):**
+```
+Integration Goals:
+1. Define relationship types/validation rules formally
+2. Create reusable mapping workflow specifications
+3. Use YAML specification format
+4. Support spec validation with `specify check`
+5. Auto-generate documentation from specs
+
+Technical Requirements:
+- Python 3.11+
+- Git
+- uv package manager
+
+Project Structure:
+- specs/relationships/ - Relationship type specifications
+- specs/mappings/ - Mapping workflow specifications
+- specs/validations/ - Data validation specifications
+- specs/templates/ - Reusable specification templates
+```
+
+**Gap Analysis:**
+- ❌ No target user personas
+- ❌ No product requirements (only tooling requirements)
+- ❌ No success metrics
+- ❌ No feature specifications for the actual relationship mapper
+- ⚠️ Edition focuses on **how to specify** rather than **what to build**
+
+---
+
+#### Magic-Path Edition - **UX Methodology PRD**
+
+**PRD Quality Score: 5/10**
+
+**Focus:** Custom UX methodology, not product requirements
+
+**Implied Requirements (from README.md):**
+```
+UX Methodology Principles:
+1. Simplicity First - Start simple, add complexity only when valuable
+2. Path-Based Thinking - Relationships as connected paths, not isolated nodes
+3. Contextual Intelligence - System learns from user patterns
+4. Visual Storytelling - Relationships tell stories through visual paths
+
+Key Features Planned:
+1. Smart Path Detection - Identify common relationship patterns
+2. Visual Path Mapping - Person → Organization → Project → Outcome
+3. Contextual Recommendations - AI-powered suggestions
+4. Interactive Path Exploration - Click, hover, filter, timeline
+
+Technical Stack:
+- React, D3.js, Three.js (3D visualizations)
+- Zustand or Jotai (state management)
+- D3.js, React Flow (visualization)
+- Claude Code API (AI integration)
+```
+
+**Roadmap (Implied):**
+```
+Phase 1: Foundation - Basic path creation API, simple visualization
+Phase 2: Intelligence - AI recommendations, validation, learning
+Phase 3: Advanced - Real-time collaboration, time-travel, analytics
+```
+
+**Gap Analysis:**
+- ❌ No target user personas (who is this for?)
+- ❌ No problem statement (what pain are we solving?)
+- ❌ No acceptance criteria
+- ❌ No success metrics
+- ⚠️ Focuses on UX patterns rather than product requirements
+
+---
+
+#### OpenSpec Edition - **AI Tooling PRD**
+
+**PRD Quality Score: 4.5/10**
+
+**Focus:** OpenSpec v0.15.0 framework integration for multi-agent collaboration
+
+**Implied Requirements (from README.md):**
+```
+Integration Goals:
+1. Auto-generate specifications from natural language
+2. Support multi-agent collaboration (Claude, Gemini, RooCode)
+3. Validate relationship data against specs
+4. Generate test suites from specifications
+
+CLI Commands:
+- openspec init, generate, validate
+- openspec test generate, test run
+- openspec docs generate
+- openspec prompt --agent <name>
+- openspec reverse-engineer
+
+Configuration (openspec.config.yml):
+- Multi-agent support (Claude, Gemini)
+- Spec directory and format
+- Testing framework (Jest, 80% coverage)
+- Auto-documentation generation
+```
+
+**Target Users (Future):**
+```
+- Future End-Users: Ecosystem analysts, relationship strategists
+- Current "Users": AI Coding Assistants (Claude, Gemini, RooCode)
+```
+
+**Gap Analysis:**
+- ❌ No product requirements for relationship mapper itself
+- ❌ No user stories
+- ❌ No acceptance criteria
+- ❌ No success metrics
+- ⚠️ Focuses on AI-assisted specification tooling, not the product
+
+---
+
+#### Codex & Gemini_3 Editions - **Initialization Only**
+
+**PRD Quality Score: 2/10** (both)
+
+**Status:** Repository initialization phase - no PRD exists
+
+**Implied Requirements (from READMEs):**
+```
+Both editions plan to:
+1. Port baseline from Claude edition
+2. Optimize for agent-specific workflows (Codex/Copilot vs. Gemini)
+3. Compare code generation patterns
+4. Document differences in approach
+
+Current State:
+- No features implemented
+- No specifications written
+- Awaiting first experiment
+```
+
+**Gap Analysis:**
+- ❌ No product requirements
+- ❌ No user stories
+- ❌ No acceptance criteria
+- ❌ No success metrics
+- ❌ No technical specifications
+- ⚠️ Pure placeholder repositories
+
+---
+
+### 3A.4 PRD Completeness Scoring Matrix
+
+| Criterion (Weight) | BMAD | Claude | Spec-Kit | Magic-Path | OpenSpec | Codex | Gemini_3 |
+|-------------------|------|--------|----------|------------|----------|-------|----------|
+| **Product Vision (15%)** | 15 | 12 | 6 | 8 | 6 | 2 | 2 |
+| **User Personas (15%)** | 15 | 10 | 6 | 4 | 5 | 0 | 0 |
+| **Functional Reqs (20%)** | 20 | 14 | 8 | 10 | 8 | 0 | 0 |
+| **Non-Functional Reqs (10%)** | 10 | 8 | 2 | 2 | 2 | 0 | 0 |
+| **User Stories (10%)** | 10 | 3 | 0 | 0 | 0 | 0 | 0 |
+| **Acceptance Criteria (10%)** | 10 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **Success Metrics (10%)** | 10 | 2 | 0 | 0 | 0 | 0 | 0 |
+| **Risk Analysis (5%)** | 5 | 2 | 0 | 0 | 0 | 0 | 0 |
+| **Roadmap (5%)** | 5 | 4 | 3 | 4 | 0 | 0 | 0 |
+| **TOTAL (100%)** | **95** | **55** | **25** | **28** | **21** | **2** | **2** |
+
+### 3A.5 PRD Philosophy Comparison
+
+| Edition | PRD Philosophy | When PRD Created | PRD Purpose |
+|---------|---------------|------------------|-------------|
+| **BMAD** | **PRD-First** | Before implementation | Drive development with methodology fidelity |
+| **Claude** | **Ship-First** | Documentation emerged post-implementation | Capture what was built |
+| **Spec-Kit** | **Spec-Driven** | As needed for AI agents | Guide AI coding assistants |
+| **Magic-Path** | **Methodology-First** | Defines UX approach | Establish design philosophy |
+| **OpenSpec** | **AI-Assisted** | Generated via OpenSpec CLI | Enable multi-agent collaboration |
+| **Codex** | **Port-First** | Not yet created | Will document agent differences |
+| **Gemini_3** | **Port-First** | Not yet created | Will document agent differences |
+
+### 3A.6 Key Insights from PRD Analysis
+
+**1. Only BMAD Has a True PRD:**
+The BMAD edition is the only one with a formal, comprehensive Product Requirements Document. All other editions either:
+- Scattered requirements across multiple docs (Claude)
+- Focus on tooling/methodology rather than product (Spec-Kit, Magic-Path, OpenSpec)
+- Have no PRD at all (Codex, Gemini_3)
+
+**2. Claude's "Anti-PRD" Approach Worked:**
+Despite no formal PRD, Claude shipped to production first. Its philosophy ("ship, don't infrastructure") prioritized working code over documentation. However, this makes feature comparison and handoff difficult.
+
+**3. Tooling Editions Miss Product Focus:**
+Spec-Kit, Magic-Path, and OpenSpec define **how to build** (specification frameworks, UX methodologies, AI tooling) but not **what to build** (product requirements). This creates a gap where the actual relationship mapper product remains undefined.
+
+**4. PRD Completeness Correlates with Maturity:**
+```
+BMAD (95/100) → Pilot-ready with 2 coaches
+Claude (55/100) → Production deployed but limited PRD
+Spec-Kit (25/100) → MVP feature only
+Magic-Path (28/100) → Conceptual
+OpenSpec (21/100) → Specification-only
+Codex/Gemini_3 (2/100) → Not started
+```
+
+**5. Recommendation for Unified PRD:**
+The optimized hybrid PRD (Section 5) should adopt BMAD's structure while incorporating:
+- Claude's implementation-tested features
+- Spec-Kit's specification-driven approach
+- Magic-Path's UX principles
+- OpenSpec's multi-agent support
 
 ---
 

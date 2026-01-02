@@ -31,3 +31,4 @@ venv/
 # Edition-local virtualenvs
 versions/*/.venv/
 versions/*/.venv
+.claude/
