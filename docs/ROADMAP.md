@@ -13,10 +13,9 @@
 
 ---
 
-## Current: v1.0 — Deployed ✅
+## v1.0 — Core Tool ✅ Shipped 2026-02-20
 
 **Status:** Live at https://v1-rhart696s-projects.vercel.app
-**Shipped:** 2026-02-20
 
 Core coaching tool — single session, no backend.
 
@@ -28,44 +27,44 @@ Core coaching tool — single session, no backend.
 | Persistent legend | Always-visible score key on canvas |
 | Score pills + right-click reset | In panel and on canvas |
 | Relationship notes | Per-person notes with 2-line preview |
-| Coachee name personalisation | Updates hub label and PDF filename |
+| Coachee name personalisation | Updates hub label and export filenames |
 | Scored/total counter | "{n}/{total} ↗↙" in panel header |
 | Inline name edit | Pencil icon per row, Enter/Escape |
 | Insights panel | Mapped / Strong / Asymmetric / Low — live metrics |
 | Demo data button | "Load example map" — 7-person pre-scored map |
-| Export PDF | Personalised filename, map only |
+| Export PDF | Map + notes page; personalised filename |
+| Print-to-PDF fallback | `window.print()` in catch block |
 | Back to map / Start new session | Full session preserved after export |
 
 ---
 
-## Next: v1.1 — Quick Wins
+## v1.1 — Quick Wins ✅ Shipped 2026-02-20
 
-**Target:** 1–2 sessions
 **Theme:** Polish the single-session experience before adding persistence.
 
-| # | Feature | Idea | Effort | Value | Notes |
-|---|---------|------|--------|-------|-------|
-| 1 | **Notes in PDF export** | #010 | Low | High | Append per-relationship notes below the map in the PDF — currently notes are lost on export |
-| 2 | **Export map as image (PNG)** | #002 | Low | Medium | Serialise existing SVG → PNG via canvas; useful for pasting into slide decks |
-| 3 | **Coachee name on hub — fit more text** | #011 | Low | Medium | Current truncation at 6 chars feels tight; explore wrapping or initials+tooltip |
-| 4 | **Print/print-to-PDF fallback** | #009 | Low | Low | `window.print()` + print stylesheet as a no-JS-dependency fallback |
+| # | Feature | Idea | Notes |
+|---|---------|------|-------|
+| 1 | **Notes in PDF export** | #010 | Already in v1.0; notes page appended when any note exists |
+| 2 | **Export map as image (PNG)** | #002 | 3× scale canvas download; shared SVG→canvas pipeline with PDF |
+| 3 | **Coachee name on hub — fit more text** | #011 | Two-line word wrap for names >8 chars; hard split at char 7 |
+| 4 | **Print/print-to-PDF fallback** | #009 | Already in v1.0; `window.print()` in PDF catch block |
+| + | **Personalised export filenames** | — | PDF and PNG filenames include coachee name slug |
 
 ---
 
-## v1.2 — Accessibility & Onboarding
+## v1.2 — Accessibility & Onboarding ✅ Shipped 2026-02-20
 
-**Target:** 2–3 sessions
 **Theme:** First-time experience and keyboard users.
 
-| # | Feature | Idea | Effort | Value | Notes |
-|---|---------|------|--------|-------|-------|
-| 1 | **Welcome onboarding slides** | #007 | Medium | High | 3-slide first-visit modal: What is TVM / How to score / What to do with the map. Show once; skippable. |
-| 2 | **Keyboard navigation on canvas** | #003 | Medium | Medium | Tab through nodes, Space/Enter to cycle score, Escape to deselect |
-| 3 | **Dark mode** | #001 | Medium | Low | CSS custom properties already in place; respect `prefers-color-scheme` |
+| # | Feature | Idea | Notes |
+|---|---------|------|-------|
+| 1 | **Welcome onboarding slides** | #007 | 3-slide first-visit modal; localStorage gate; skip/dismiss |
+| 2 | **Keyboard navigation on canvas** | #003 | Visible focus ring on all 14 tabbable arrows; Enter/Space to cycle |
+| 3 | **Dark mode** | #001 | ⏸ Deferred — see Deferred section below |
 
 ---
 
-## v2.0 — Session Persistence
+## Next: v2.0 — Session Persistence
 
 **Target:** 3–4 sessions
 **Theme:** Sessions survive browser close. No login required.
@@ -94,6 +93,14 @@ This is the most impactful single upgrade for real coaching use — currently, c
 
 ---
 
+## Deferred
+
+| Feature | Idea | Reason | Trigger to revisit |
+|---------|------|--------|-------------------|
+| **Dark mode** | #001 | Low coaching value; inline styles require significant refactor | Coach or coachee requests it, OR usage data shows sessions in low-light environments |
+
+---
+
 ## Out of Scope (for now)
 
 | Feature | Reason |
@@ -117,3 +124,4 @@ The ordering is driven by three factors:
 ## Document History
 
 - 2026-02-20: Created. Based on IDEAS.md inventory and cross-version UX review.
+- 2026-02-20: Updated — v1.1 and v1.2 marked shipped. Dark mode moved to Deferred with trigger condition.

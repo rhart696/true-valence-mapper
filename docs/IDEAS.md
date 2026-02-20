@@ -17,72 +17,62 @@
 
 ---
 
-## Done (Implemented in v1 — 2026-02-20)
+## Done
 
 ### #D01 - Dash patterns on arrows (WCAG 1.4.1)
-**Status:** Done | **Completed:** 2026-02-20
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
 Arrows now encode score with both colour and dash pattern (solid/dash/dot/long-dash) so colour is not the only visual indicator.
 
 ### #D02 - Persistent legend on canvas
-**Status:** Done | **Completed:** 2026-02-20
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
 Always-visible score key in bottom-right corner of SVG. No need to open the definitions modal to understand the colours.
 
 ### #D03 - Scored/total arrows counter
-**Status:** Done | **Completed:** 2026-02-20
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
 "{n}/{total} ↗↙" indicator in panel header — coaches can see at a glance how complete the map is.
 
 ### #D04 - Inline name edit
-**Status:** Done | **Completed:** 2026-02-20
-Pencil icon per relationship row. Click to enter edit mode, Enter to save, Escape to cancel. Removes the friction of having to delete and re-add a mistyped name.
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
+Pencil icon per relationship row. Click to enter edit mode, Enter to save, Escape to cancel.
 
 ### #D05 - Insights panel
-**Status:** Done | **Completed:** 2026-02-20
-4 coaching metrics (Mapped / Strong / Asymmetric / Low) shown live in the panel when 2+ relationships exist. Gives the coach a debrief scaffold without leaving the map.
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
+4 coaching metrics (Mapped / Strong / Asymmetric / Low) shown live in the panel when 2+ relationships exist.
 
 ### #D06 - Demo data / example map
-**Status:** Done | **Completed:** 2026-02-20
-"Load example map" button on landing screen. Pre-built 7-person map with all score patterns (bilateral high, asymmetric, low, unscored) — useful for demos and first-time users learning the tool.
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
+"Load example map" button on landing screen. Pre-built 7-person map with all score patterns.
+
+### #007 - Welcome Onboarding (First-Time Experience)
+**Status:** Done | **Completed:** 2026-02-20 (v1.2)
+3-slide first-visit modal: (1) What is True Valence / the two questions, (2) How to score / all four levels with badges, (3) What the map reveals / three coaching patterns. Shown once; localStorage gate (`tvm-onboarding-v1-complete`); skip/dismiss at any slide.
+
+### #002 - Export Visualization as Image
+**Status:** Done | **Completed:** 2026-02-20 (v1.1)
+PNG export via shared SVG→canvas pipeline (3× scale for slide-deck quality). "PNG" button in panel footer alongside "Export PDF". Personalised filename includes coachee name slug.
+
+### #003 - Keyboard Navigation for Visualization
+**Status:** Done (partial) | **Completed:** 2026-02-20 (v1.2)
+All 14 arrows on the canvas are tabbable (`tabIndex=0`). Visible dashed navy focus ring appears on focused arrow badge. Enter/Space cycles score. Full node-level arrow-key navigation deferred — current implementation covers the primary keyboard use case.
+
+### #009 - Print / Print-to-PDF Fallback
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
+`window.print()` called in PDF export catch block as fallback if jsPDF fails.
+
+### #010 - Relationship Notes Export in PDF
+**Status:** Done | **Completed:** 2026-02-20 (v1.0)
+Notes page appended to PDF when any relationship has a non-empty note. Each entry shows name — note text, wrapped to page width.
+
+### #011 - Coachee Name on Hub Node (Full Name)
+**Status:** Done | **Completed:** 2026-02-20 (v1.1)
+`hubLabelLines()` supports names up to ~14 chars with natural two-line word wrap (splits at first space ≤9 chars; hard split at char 7 otherwise). Font size 10px for two-line; single-line sizes unchanged.
 
 ---
 
 ## Active Ideas
 
-### #001 - Dark Mode Support
-**Status:** New | **Added:** 2026-01-01
-**Source:** Common UX expectation
-
-Add dark mode toggle for the visualization interface. Consider:
-- CSS custom properties already in place
-- User preference persistence (localStorage or Supabase)
-- Respect system preference
-
----
-
-### #002 - Export Visualization as Image
-**Status:** New | **Added:** 2026-01-01
-**Source:** User sharing needs
-
-Allow users to export their valence map as PNG/SVG for sharing outside the app.
-- SVG export is straightforward (serialise the existing SVG element)
-- html2canvas for PNG with branding
-- Consider watermark/branding
-
----
-
-### #003 - Keyboard Navigation for Visualization
-**Status:** New | **Added:** 2026-01-01
-**Source:** Accessibility requirements
-
-Full keyboard navigation through the valence map:
-- Arrow keys to move between nodes
-- Enter to select/expand
-- Escape to deselect
-- Tab order for all interactive elements
-
----
-
 ### #004 - Session Persistence (localStorage)
-**Status:** New | **Added:** 2026-02-20
+**Status:** Approved (v2.0) | **Added:** 2026-02-20
 **Source:** Prototype review — original HTML prototype had local save/load
 
 Auto-save the current session to localStorage on every change. Restore on page load with a "Resume last session" prompt. Prevents data loss when the browser is accidentally closed during a coaching session.
@@ -95,7 +85,7 @@ Implementation notes:
 ---
 
 ### #005 - Cloud Save / Share Link
-**Status:** New | **Added:** 2026-02-20
+**Status:** Approved (v2.0) | **Added:** 2026-02-20
 **Source:** Prototype review — original had Supabase backend with share codes
 
 Save a map to the cloud and generate a short share code (e.g., 6-char alphanumeric). Coach can share URL with coachee or access across devices.
@@ -109,7 +99,7 @@ Implementation notes:
 ---
 
 ### #006 - Version History / Longitudinal Tracking
-**Status:** New | **Added:** 2026-02-20
+**Status:** Approved (v3.0) | **Added:** 2026-02-20
 **Source:** Prototype review — original had auto-save + manual save with labels
 
 Allow coaches to save named snapshots ("Session 1 — March", "Session 3 — May") and compare two snapshots side-by-side. Most powerful use case: showing coachee how their map changed over 3-6 months.
@@ -122,21 +112,8 @@ Implementation notes:
 
 ---
 
-### #007 - Welcome Onboarding (First-Time Experience)
-**Status:** New | **Added:** 2026-02-20
-**Source:** Prototype review — original had multi-slide welcome modal with dot navigation
-
-Show a 3-slide modal on first visit: (1) What is True Valence, (2) How to score, (3) What to do with the map. Only shown once; skippable; "Don't show again" checkbox.
-
-Implementation notes:
-- Use localStorage to track first-visit state
-- Slides already drafted conceptually in REVISED-UX-OPTIMIZATION-PLAN.md
-- Complements rather than replaces the definitions modal (which stays)
-
----
-
 ### #008 - Context-Sensitive Coaching Questions
-**Status:** New | **Added:** 2026-02-20
+**Status:** Approved (v3.0) | **Added:** 2026-02-20
 **Source:** Prototype review — original generated questions based on map state
 
 After scoring, show a set of debrief questions tailored to the map's pattern (e.g., if asymmetric relationships detected, surface questions about those). Questions update as scores change.
@@ -154,33 +131,17 @@ Implementation notes:
 
 ---
 
-### #009 - Print / Print-to-PDF Fallback
-**Status:** New | **Added:** 2026-02-20
-**Source:** Prototype review — original had a Print button in the quick-actions menu
-
-`window.print()` with a print stylesheet that shows just the map and legend. Fallback for environments where the PDF export library is unavailable or slow.
-
----
-
-### #010 - Relationship Notes Export in PDF
-**Status:** New | **Added:** 2026-02-20
-**Source:** Gap identified during focus group testing
-
-Currently the PDF export shows the SVG map only. Notes (per-relationship text) are not included. Add a notes section to the PDF: each relationship with its note, grouped below the map.
-
----
-
-### #011 - Coachee Name on Hub Node (Full Name)
-**Status:** Considering | **Added:** 2026-02-20
-**Source:** Focus group observation
-
-The hub currently truncates the coachee name to ~6 chars. Consider fitting more text, or using initials with a full-name tooltip on hover. Would make the map more personal and recognizable in the PDF.
-
----
-
 ## Deferred Ideas
 
-(None yet)
+### #001 - Dark Mode Support
+**Status:** Deferred | **Added:** 2026-01-01 | **Deferred:** 2026-02-20
+**Source:** Common UX expectation
+**Value:** Low — coaching sessions are typically in well-lit office environments.
+**Effort:** Medium-high — all components use inline hex values; full refactor needed to use CSS variables throughout.
+
+**Trigger to revisit:** Coach or coachee explicitly requests it, OR usage data surfaces sessions in low-light environments.
+
+**Note:** CSS custom property tokens are in place in `globals.css` (`@theme inline`). The infrastructure is ready; the effort is converting ~15 components from inline hex to CSS var references.
 
 ---
 
@@ -194,3 +155,4 @@ The hub currently truncates the coachee name to ~6 chars. Consider fitting more 
 
 - 2026-01-01: Created with initial seed ideas
 - 2026-02-20: Added #D01–#D06 (implemented), #004–#011 from prototype review + focus group
+- 2026-02-20: Updated — #002, #003, #007, #009, #010, #011 moved to Done (v1.1/v1.2). #001 moved to Deferred with trigger condition. #004–#006, #008 updated to Approved status with target version.
