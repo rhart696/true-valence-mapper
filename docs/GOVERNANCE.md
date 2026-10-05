@@ -1,3 +1,9 @@
+# Superseded historical governance — read CONVERGENCE first
+
+Superseded 2026-10-05 by [CONVERGENCE](CONVERGENCE.md), [CURRENT-STATE](CURRENT-STATE.md) and root AGENTS.md. The text below is historical; independent edition development, push-to-main and template overwrite instructions are not current authority. Original copies are preserved in docs/archive/governance-2026-10-05.
+
+---
+
 # True Valence Mapper - Multi-Agent Governance
 
 This document defines how different AI-led editions coordinate development and share innovations.

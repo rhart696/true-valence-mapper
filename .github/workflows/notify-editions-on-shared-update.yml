@@ -19,7 +19,8 @@ jobs:
   notify-editions:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: contains(github.event.head_commit.message, 'shared/')
+    # Parallel edition adoption is retired; canonical records govern changes.
+    if: ${{ false }}
 
     steps:
       - name: Checkout parent repo

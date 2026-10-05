@@ -5,43 +5,68 @@
       "name": "Claude Code",
       "focus": "Reference implementation, security-first development, baseline architecture",
       "repo": "true-valence-mapper-claude",
-      "status": "active"
+      "status": "canonical",
+      "role": "canonical",
+      "governance_sync": false
     },
     "codex": {
       "name": "Codex",
       "focus": "GitHub Copilot/Codex-led development, engineering workflow optimization",
       "repo": "true-valence-mapper-codex",
-      "status": "development"
+      "status": "reference-frozen",
+      "role": "reference",
+      "governance_sync": false
     },
     "bmad": {
       "name": "BMAD",
       "focus": "BMAD-METHOD v6-alpha integration, requirements modeling and validation workflows",
       "repo": "true-valence-mapper-bmad",
-      "status": "development"
+      "status": "reference-frozen",
+      "role": "reference",
+      "governance_sync": false
     },
     "spec-kit": {
       "name": "Spec-Kit",
       "focus": "GitHub Spec-Kit integration, specification-driven development with AI agent guidance",
       "repo": "true-valence-mapper-spec-kit",
-      "status": "development"
+      "status": "reference-frozen",
+      "role": "reference",
+      "governance_sync": false
     },
     "magic-path": {
       "name": "Magic-Path",
       "focus": "Custom UX methodology, intuitive workflows and visual storytelling",
       "repo": "true-valence-mapper-magic-path",
-      "status": "development"
+      "status": "reference-frozen",
+      "role": "reference",
+      "governance_sync": false
     },
     "openspec": {
       "name": "OpenSpec",
       "focus": "OpenSpec v0.15.0 integration, AI-assisted specification generation",
       "repo": "true-valence-mapper-openspec",
-      "status": "development"
+      "status": "reference-frozen",
+      "role": "reference",
+      "governance_sync": false
     },
     "Gemini_3": {
       "name": "Gemini 3",
       "focus": "Google Gemini-led development, Antigravity IDE optimization",
       "repo": "true-valence-mapper-Gemini_3",
-      "status": "active"
+      "status": "reference-frozen",
+      "role": "reference",
+      "governance_sync": false
+    },
+    "antigravity": {
+      "name": "Antigravity",
+      "focus": "Preserved experimental lineage; not an active product edition",
+      "repo": "true-valence-mapper-antigravity",
+      "role": "reference",
+      "status": "reference-frozen",
+      "governance_sync": false
     }
-  }
+  },
+  "product_governance": "https://github.com/rhart696/true-valence-mapper-claude/blob/main/docs/START-HERE.md",
+  "canonical_edition": "claude",
+  "convergence_date": "2026-10-05"
 }
