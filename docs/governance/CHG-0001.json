@@ -1,0 +1,56 @@
+{
+  "id": "CHG-0001",
+  "date": "2026-10-05",
+  "owner": "Richard Hart / ProActive ReSolutions",
+  "agent": "Codex",
+  "change_type": "governance",
+  "summary": "Converge to canonical app while preserving reference lineage",
+  "rationale": "User-authorized single product and evidence-governed development require retiring parallel template/advancement automation without deleting history.",
+  "canonical_context_url": "https://github.com/rhart696/true-valence-mapper-claude/blob/main/docs/governance/registry.json",
+  "requirements": [
+    "REQ-0001",
+    "REQ-0002",
+    "REQ-0012"
+  ],
+  "decisions": [
+    "DEC-0001",
+    "DEC-0002",
+    "DEC-0006"
+  ],
+  "evidence": [
+    "SRC-0001",
+    "OBS-0001"
+  ],
+  "risks": [
+    "RSK-0006"
+  ],
+  "tests": [
+    "TEST-0001"
+  ],
+  "validation": "docs/CONVERGENCE-VALIDATION.md; canonical TEST-0001; parent integrity plus eight negative/regression tests",
+  "paths": [
+    ".github/workflows/auto-sync-submodules.yml",
+    ".github/workflows/convergence.yml",
+    ".github/workflows/notify-editions-on-shared-update.yml",
+    ".github/workflows/sync-governance-files.yml",
+    ".github/workflows/weekly-health-check.yml",
+    "AGENTS.md",
+    "README.md",
+    "docs/CONVERGENCE-VALIDATION.md",
+    "docs/CONVERGENCE.md",
+    "docs/CURRENT-STATE.md",
+    "docs/GOVERNANCE-WORKFLOW.md",
+    "docs/GOVERNANCE.md",
+    "docs/REPOSITORY-STRUCTURE.md",
+    "docs/archive/governance-2026-10-05/AGENTS.md",
+    "docs/archive/governance-2026-10-05/README.md",
+    "docs/archive/governance-2026-10-05/docs/GOVERNANCE-WORKFLOW.md",
+    "docs/archive/governance-2026-10-05/docs/GOVERNANCE.md",
+    "docs/archive/governance-2026-10-05/docs/REPOSITORY-STRUCTURE.md",
+    "docs/governance/CHG-0001.json",
+    "docs/governance/EDITION-SNAPSHOT.json",
+    "scripts/check-reference-integrity.py",
+    "scripts/tests/test_convergence.py",
+    "shared/templates/editions.json"
+  ]
+}

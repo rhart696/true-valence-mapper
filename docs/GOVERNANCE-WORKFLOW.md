@@ -1,3 +1,9 @@
+# Superseded historical governance — read CONVERGENCE first
+
+Superseded 2026-10-05 by [CONVERGENCE](CONVERGENCE.md), [CURRENT-STATE](CURRENT-STATE.md) and root AGENTS.md. The text below is historical; independent edition development, push-to-main and template overwrite instructions are not current authority. Original copies are preserved in docs/archive/governance-2026-10-05.
+
+---
+
 # Governance Workflow - True Valence Mapper
 
 > **For AI Agents:** If you're reading this, you've found the governance documentation. Start with the [Quick Reference](#quick-reference-for-ai-agents) section.

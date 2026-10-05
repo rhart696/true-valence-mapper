@@ -32,6 +32,8 @@ permissions:
 
 jobs:
   sync-files:
+    # Retired by canonical convergence: no cross-repository template overwrites.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
